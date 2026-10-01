@@ -51,24 +51,5 @@ images:
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/shippingservice
   newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 
-# ─── Dev-specific patches ────────────────────────────────
-  # Reduce resource requests/limits for dev
-patches:
-- patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/resources/requests/cpu
-      value: "50m"
-    - op: replace
-      path: /spec/template/spec/containers/0/resources/requests/memory
-      value: "32Mi"
-    - op: replace
-      path: /spec/template/spec/containers/0/resources/limits/cpu
-      value: "100m"
-    - op: replace
-      path: /spec/template/spec/containers/0/resources/limits/memory
-      value: "64Mi"
-  target:
-    kind: Deployment
-
 commonLabels:
   environment: dev
