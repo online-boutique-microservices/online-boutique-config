@@ -19,37 +19,37 @@ resources:
 images:
 - name: adservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/adservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: cartservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/cartservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: checkoutservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/checkoutservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: currencyservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/currencyservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: emailservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/emailservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: frontend
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/frontend
-  newTag: sha-3a56c80789a751d3878f4b023b179195434e96b2
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: loadgenerator
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/loadgenerator
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: paymentservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/paymentservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: productcatalogservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/productcatalogservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: recommendationservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/recommendationservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 - name: shippingservice
   newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/shippingservice
-  newTag: latest
+  newTag: sha-18d3e3478875c7a9dd642fc613d7a2b393df8e03
 
 # ─── Dev-specific patches ────────────────────────────────
   # Reduce resource requests/limits for dev
