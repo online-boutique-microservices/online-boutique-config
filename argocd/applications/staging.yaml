@@ -1,0 +1,42 @@
+# ============================================================
+# ArgoCD Application — Staging Environment
+# Auto-syncs from envs/staging/ after image promotion.
+# ============================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-boutique-staging
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: online-boutique
+    environment: staging
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: devops-alerts
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: devops-alerts
+spec:
+  project: online-boutique
+
+  source:
+    repoURL: https://github.com/YOUR_ORG/online-boutique-config.git
+    targetRevision: main
+    path: envs/staging
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        maxDuration: 3m0s
+        factor: 2

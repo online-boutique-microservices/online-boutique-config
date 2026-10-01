@@ -1,0 +1,53 @@
+# ============================================================
+# ArgoCD Application — Dev Environment
+# Auto-syncs: every commit to envs/dev/ triggers deployment.
+# ============================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-boutique-dev
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: online-boutique
+    environment: dev
+  annotations:
+    # Slack notifications (configure ArgoCD Notifications controller)
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: devops-alerts
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: devops-alerts
+    notifications.argoproj.io/subscribe.on-health-degraded.slack: devops-alerts
+spec:
+  project: online-boutique
+
+  source:
+    repoURL: https://github.com/YOUR_ORG/online-boutique-config.git
+    targetRevision: main
+    path: envs/dev
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      prune: true       # Delete resources removed from Git
+      selfHeal: true    # Revert manual changes on cluster
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - ServerSideApply=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        maxDuration: 3m0s
+        factor: 2
+
+  # Ignore differences that K8s controllers mutate
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas

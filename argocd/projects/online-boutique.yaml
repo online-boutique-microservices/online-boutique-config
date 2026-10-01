@@ -1,0 +1,41 @@
+# ============================================================
+# ArgoCD AppProject — Online Boutique
+# Defines project-level access control for all environments.
+# ============================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: online-boutique
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "Online Boutique E-commerce Microservices"
+
+  # Only allow manifests from our config repo
+  sourceRepos:
+    - "https://github.com/YOUR_ORG/online-boutique-config.git"
+
+  # Allowed deployment destinations
+  destinations:
+    - namespace: dev
+      server: https://kubernetes.default.svc
+    - namespace: staging
+      server: https://kubernetes.default.svc
+    - namespace: production
+      server: https://kubernetes.default.svc
+
+  # Allow creating namespaces
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+
+  # Allow all namespaced resources
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
+  # Prevent accidental deletion of production resources
+  orphanedResources:
+    warn: true

@@ -1,0 +1,97 @@
+# ============================================================
+# Production Environment — Kustomize Overlay
+# - ElastiCache Redis (managed)
+# - Higher resource limits
+# - Multiple replicas
+# - No loadgenerator
+# - Image tags promoted from staging
+# ============================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: production
+
+resources:
+  - ../../base
+  - namespace.yaml
+  - hpa.yaml
+
+# ─── Image tags (promoted from staging via promote.sh) ───
+images:
+  - name: frontend
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/frontend
+    newTag: latest
+  - name: cartservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/cartservice
+    newTag: latest
+  - name: checkoutservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/checkoutservice
+    newTag: latest
+  - name: productcatalogservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/productcatalogservice
+    newTag: latest
+  - name: currencyservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/currencyservice
+    newTag: latest
+  - name: paymentservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/paymentservice
+    newTag: latest
+  - name: shippingservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/shippingservice
+    newTag: latest
+  - name: emailservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/emailservice
+    newTag: latest
+  - name: recommendationservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/recommendationservice
+    newTag: latest
+  - name: adservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/adservice
+    newTag: latest
+  - name: loadgenerator
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/loadgenerator
+    newTag: latest
+
+patches:
+  # Higher replicas for production
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
+  - target:
+      kind: Deployment
+      name: checkoutservice
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+  - target:
+      kind: Deployment
+      name: productcatalogservice
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+
+  # Point cartservice to ElastiCache instead of in-cluster Redis
+  - target:
+      kind: Deployment
+      name: cartservice
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: "ELASTICACHE_ENDPOINT:6379"
+
+  # Remove loadgenerator in production
+  - target:
+      kind: Deployment
+      name: loadgenerator
+    patch: |-
+      $patch: delete
+
+commonLabels:
+  environment: production

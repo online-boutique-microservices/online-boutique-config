@@ -1,0 +1,36 @@
+# ============================================================
+# ArgoCD Application — Production Environment
+# MANUAL SYNC ONLY — requires explicit approval via ArgoCD UI.
+# ============================================================
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-boutique-prod
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: online-boutique
+    environment: production
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: devops-critical
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: devops-critical
+    notifications.argoproj.io/subscribe.on-health-degraded.slack: devops-critical
+spec:
+  project: online-boutique
+
+  source:
+    repoURL: https://github.com/YOUR_ORG/online-boutique-config.git
+    targetRevision: main
+    path: envs/prod
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+
+  # ⚠️ NO automated sync — production requires manual approval
+  # Sync via: ArgoCD UI → Click "Sync" → Review diff → Confirm
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - ServerSideApply=true

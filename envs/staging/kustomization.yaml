@@ -1,0 +1,63 @@
+# ============================================================
+# Staging Environment — Kustomize Overlay
+# - ElastiCache Redis (single node)
+# - 2 replicas for critical services
+# - Image tags promoted from dev
+# ============================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: staging
+
+resources:
+  - ../../base
+  - namespace.yaml
+
+images:
+  - name: frontend
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/frontend
+    newTag: latest
+  - name: cartservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/cartservice
+    newTag: latest
+  - name: checkoutservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/checkoutservice
+    newTag: latest
+  - name: productcatalogservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/productcatalogservice
+    newTag: latest
+  - name: currencyservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/currencyservice
+    newTag: latest
+  - name: paymentservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/paymentservice
+    newTag: latest
+  - name: shippingservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/shippingservice
+    newTag: latest
+  - name: emailservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/emailservice
+    newTag: latest
+  - name: recommendationservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/recommendationservice
+    newTag: latest
+  - name: adservice
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/adservice
+    newTag: latest
+  - name: loadgenerator
+    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/loadgenerator
+    newTag: latest
+
+patches:
+  # 2 replicas for frontend in staging
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+
+commonLabels:
+  environment: staging
