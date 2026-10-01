@@ -11,64 +11,64 @@ kind: Kustomization
 namespace: dev
 
 resources:
-  - ../../base
-  - namespace.yaml
+- ../../base
+- namespace.yaml
 
 # ─── Image tags (auto-updated by CI pipeline) ────────────
 # CI runs: kustomize edit set image <svc>=<ecr_url>:<tag>
 images:
-  - name: frontend
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/frontend
-    newTag: latest
-  - name: cartservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/cartservice
-    newTag: latest
-  - name: checkoutservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/checkoutservice
-    newTag: latest
-  - name: productcatalogservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/productcatalogservice
-    newTag: latest
-  - name: currencyservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/currencyservice
-    newTag: latest
-  - name: paymentservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/paymentservice
-    newTag: latest
-  - name: shippingservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/shippingservice
-    newTag: latest
-  - name: emailservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/emailservice
-    newTag: latest
-  - name: recommendationservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/recommendationservice
-    newTag: latest
-  - name: adservice
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/adservice
-    newTag: latest
-  - name: loadgenerator
-    newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/loadgenerator
-    newTag: latest
+- name: adservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/adservice
+  newTag: latest
+- name: cartservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/cartservice
+  newTag: latest
+- name: checkoutservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/checkoutservice
+  newTag: latest
+- name: currencyservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/currencyservice
+  newTag: latest
+- name: emailservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/emailservice
+  newTag: latest
+- name: frontend
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/frontend
+  newTag: sha-3a56c80789a751d3878f4b023b179195434e96b2
+- name: loadgenerator
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/loadgenerator
+  newTag: latest
+- name: paymentservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/paymentservice
+  newTag: latest
+- name: productcatalogservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/productcatalogservice
+  newTag: latest
+- name: recommendationservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/recommendationservice
+  newTag: latest
+- name: shippingservice
+  newName: 798836978890.dkr.ecr.ap-southeast-1.amazonaws.com/online-boutique/shippingservice
+  newTag: latest
 
 # ─── Dev-specific patches ────────────────────────────────
-patches:
   # Reduce resource requests/limits for dev
-  - target:
-      kind: Deployment
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/requests/cpu
-        value: "50m"
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/requests/memory
-        value: "32Mi"
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/cpu
-        value: "100m"
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/memory
-        value: "64Mi"
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/cpu
+      value: "50m"
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/memory
+      value: "32Mi"
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/cpu
+      value: "100m"
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: "64Mi"
+  target:
+    kind: Deployment
 
 commonLabels:
   environment: dev
