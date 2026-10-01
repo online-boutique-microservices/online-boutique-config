@@ -15,7 +15,7 @@ spec:
 
   # Only allow manifests from our config repo
   sourceRepos:
-    - "https://github.com/YOUR_ORG/online-boutique-config.git"
+    - "https://github.com/online-boutique-microservices/online-boutique-config.git"
 
   # Allowed deployment destinations
   destinations:

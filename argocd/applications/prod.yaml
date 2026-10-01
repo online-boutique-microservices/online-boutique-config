@@ -19,7 +19,7 @@ spec:
   project: online-boutique
 
   source:
-    repoURL: https://github.com/YOUR_ORG/online-boutique-config.git
+    repoURL: https://github.com/online-boutique-microservices/online-boutique-config.git
     targetRevision: main
     path: envs/prod
 
